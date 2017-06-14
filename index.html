@@ -1,11 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
   <head>
-
+    <meta charset="UTF-8">
+    <title>Sam's Salmon Shop</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  <meta></meta>
   </head>
 
   <body>
+
+    <form id="data-form">
+    <fieldset>
+      <legend>Open A New Shop</legend>
+
+      <label for="newShop">New Shop: </label>
+      <input name="newShop" type="text"/>
+
+      <label for="minCusts">Min Customers: </label>
+      <input name="minCusts" type="text" size="50" />
+
+      <label for="maxCusts">Max Customers: </label>
+      <input name="maxCusts" type="text" size="50" />
+
+      <label for="avgSales">Avg. Sales: </label>
+      <input name="avgSales" type="text" size="50" />
+
+      <button type="submit">Create New Store!</button>
+    </fieldset>
+  </form>
+
     <ul id="locationName1"></ul>
     <ul id="locationName2"></ul>
     <ul id="locationName3"></ul>

@@ -1,8 +1,11 @@
 'use strict';
 
-var hours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
+// GLOBAL VARIABLES
+var hours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm'];
 var samsShop = [];
 var theTable = document.getElementById('samsShopTable');
+
+var dataForm = document.getElementById('data-list');
 
 // function randCust(min, max) {
 //   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -15,21 +18,6 @@ function renderAllStores() {
   }
 }
 
-function header(){
-  var trEl = document.createElement('tr');
-  var thEl = document.createElement('th');
-  thEl.textContent = '';
-  trEl.appendChild(thEl);
-  for (var i = 0; i < hours.length; i++) {
-    thEl = document.createElement('th');
-    thEl.textContent = hours[i];
-    trEl.appendChild(thEl);
-  }
-  thEl = document.createElement('th');
-  thEl.textContent = 'Total';
-  trEl.appendChild(thEl);
-  theTable.appendChild(trEl);
-}
 
 function Shop(location, minCustomersPerHour, maxCustomersPerHour, avgCookiesPerCustomer){
   this.location = location;
@@ -45,7 +33,8 @@ function Shop(location, minCustomersPerHour, maxCustomersPerHour, avgCookiesPerC
   samsShop.push(this);
 }
 
-Shop.prototype.custPerHour = function(){
+Shop.prototype.custPerHour = function(){       //Prototype is what attaches these functions to the contructor.  it makes it a part of the store constructor === so we can applay this to all the stores... so it is almost like a property. === Prototype the generic reference to the files that attaches is to the constructor function.
+
   // var ref = [];
   for (var i = 0; i < hours.length; i++) {
     var push = Math.floor(Math.random() * (this.maxCustomersPerHour - this.minCustomersPerHour + 1)) + this.minCustomersPerHour;
@@ -82,14 +71,33 @@ Shop.prototype.render = function() {
   theTable.appendChild(trEl);
 };
 
-new Shop ('Pike Place Market', 23, 65, 6.3);
-new Shop ('SeaTac Airport', 3, 24, 1.2);
-new Shop ('Seattle Center', 11, 38, 3.7);
-new Shop ('Capitol Hill', 11, 38, 3.7);
-new Shop ('Alki', 2, 16, 4.6);
+function header(){
+  var trEl = document.createElement('tr');
+  var thEl = document.createElement('th');
+  thEl.textContent = '';
+  trEl.appendChild(thEl);
+  for (var i = 0; i < hours.length; i++) {
+    thEl = document.createElement('th');
+    thEl.textContent = hours[i];
+    trEl.appendChild(thEl);
+  }
+  thEl = document.createElement('th');
+  thEl.textContent = 'Total';
+  trEl.appendChild(thEl);
+  theTable.appendChild(trEl);
+}
+
+var pike = new Shop ('Pike Place Market', 23, 65, 6.3);
+var seaTacAirport = new Shop ('SeaTac Airport', 3, 24, 1.2);
+var pike = new Shop ('Seattle Center', 11, 38, 3.7);
+var pike = new Shop ('Capitol Hill', 11, 38, 3.7);
+var pike = new Shop ('Alki', 2, 16, 4.6);
 
 header();
 renderAllStores();
+
+//  this is a property on the constructor === cookiestand.all = []
+//
 
 // Make header for loop
 // render all stores
