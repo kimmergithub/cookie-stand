@@ -2,21 +2,15 @@
 
 // GLOBAL VARIABLES
 var hours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm'];
-var samsShop = [];
 var theTable = document.getElementById('samsShopTable');
-
-var dataForm = document.getElementById('data-list');
+var dataForm = document.getElementById('data-form');
+// var dataList = document.getElementById('chat-list');
+// var clearNewShops = document.getElementById('clear-new-stops')
+var samsShop = [];
 
 // function randCust(min, max) {
 //   return Math.floor(Math.random() * (max - min + 1) + min);
 // }
-
-function renderAllStores() {
-  for(var i = 0; i < samsShop.length; i++) {
-    samsShop[i].calcCookiesPerHour();
-    samsShop[i].render();
-  }
-}
 
 
 function Shop(location, minCustomersPerHour, maxCustomersPerHour, avgCookiesPerCustomer){
@@ -31,6 +25,20 @@ function Shop(location, minCustomersPerHour, maxCustomersPerHour, avgCookiesPerC
   // this.custPerHour();
   // this.calcCookiesPerHour();
   samsShop.push(this);
+}
+
+function renderAllStores() {
+  theTable.innerHTML = '';
+  header();
+
+  for(var i = 0; i < samsShop.length; i++) {
+    samsShop[i].calcCookiesPerHour();
+    samsShop[i].render();
+  }
+  // dataList.innerHTML = ''; //may have to make this data list to form?
+  //
+  // for (var i = 0; i < allComments.length; i++) {
+  //   chatList.appendChild(allComments[i].render());
 }
 
 Shop.prototype.custPerHour = function(){       //Prototype is what attaches these functions to the contructor.  it makes it a part of the store constructor === so we can applay this to all the stores... so it is almost like a property. === Prototype the generic reference to the files that attaches is to the constructor function.
@@ -55,6 +63,22 @@ Shop.prototype.calcCookiesPerHour = function(){
   }
 };
 
+function header(){        //because of this header function we don't need to remake the th 's '
+  var trEl = document.createElement('tr');
+  var thEl = document.createElement('th');
+  thEl.textContent = '';
+  trEl.appendChild(thEl);
+  for (var i = 0; i < hours.length; i++) {
+    thEl = document.createElement('th');
+    thEl.textContent = hours[i];
+    trEl.appendChild(thEl);
+  }
+  thEl = document.createElement('th');
+  thEl.textContent = 'Total';
+  trEl.appendChild(thEl);
+  theTable.appendChild(trEl);
+}
+
 Shop.prototype.render = function() {
   var trEl = document.createElement('tr');
   var tdEl = document.createElement('td');
@@ -71,30 +95,63 @@ Shop.prototype.render = function() {
   theTable.appendChild(trEl);
 };
 
-function header(){
-  var trEl = document.createElement('tr');
-  var thEl = document.createElement('th');
-  thEl.textContent = '';
-  trEl.appendChild(thEl);
-  for (var i = 0; i < hours.length; i++) {
-    thEl = document.createElement('th');
-    thEl.textContent = hours[i];
-    trEl.appendChild(thEl);
+// function handleNewShopSubmit(event) {
+//   event.preventDefault(); // gotta have it for this purpose. prevents page reload on a 'submit' event
+
+// Validation to prevent empty form fields
+//   if (!event.target.says.value || !event.target.who.value) {
+//     return alert('Fields cannot be empty!');
+// }
+
+new Shop ('Pike Place Market', 23, 65, 6.3);
+new Shop ('SeaTac Airport', 3, 24, 1.2);
+new Shop ('Seattle Center', 11, 38, 3.7);
+new Shop ('Capitol Hill', 20, 38, 2.3);
+new Shop ('Alki', 3, 24, 1.2);
+
+//putting this here for now! COMMENTED OUT FOR NOW!
+renderAllStores();
+
+function handleNewShopSubmit(event) {
+  //do I need an event tarter?
+  event.preventDefault();
+  // gotta have it for this purpose. prevents page reload on a 'submit' event
+
+// Validation to prevent empty form fields
+  if (!event.target.newShop.value || !event.target.minCusts.value || !event.target.maxCusts.value || !event.target.avgSales.value) {
+    return alert('Fields cannot be empty!');
   }
-  thEl = document.createElement('th');
-  thEl.textContent = 'Total';
-  trEl.appendChild(thEl);
-  theTable.appendChild(trEl);
+
+  var newShop = event.target.newShop.value;
+  var minCusts = parseInt(event.target.minCusts.value);
+  var maxCusts = parseInt(event.target.maxCusts.value);
+  var avgSales = parseInt(event.target.avgSales.value);
+
+  new Shop(newShop, minCusts, maxCusts, avgSales);
+
+  // console.log('Comment by ' + event.target.who.value + ' at ' + Date());
+
+  event.target.newShop.value = null;
+  event.target.minCusts.value = null;
+  event.target.maxCusts.value = null;
+  event.target.avgSales.value = null;
+
+  // allComments.push(newStore);   // I have problems here I need to solve
+  renderAllStores();
 }
 
-var pike = new Shop ('Pike Place Market', 23, 65, 6.3);
-var seaTacAirport = new Shop ('SeaTac Airport', 3, 24, 1.2);
-var pike = new Shop ('Seattle Center', 11, 38, 3.7);
-var pike = new Shop ('Capitol Hill', 11, 38, 3.7);
-var pike = new Shop ('Alki', 2, 16, 4.6);
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++
+// Event listener for comment submission form
+dataForm.addEventListener('submit', handleNewShopSubmit);
 
-header();
-renderAllStores();
+// Event listener for the 'Clear all comments' button
+// clearNewShops.addEventListener('click', function() {
+//   dataList.innerHTML = '';
+//   console.log('You just cleared the chat list!');
+//   allComments = [];
+// });
+
+// event.preventDefault();
 
 //  this is a property on the constructor === cookiestand.all = []
 //
@@ -124,7 +181,6 @@ renderAllStores();
 //     this.totalCookiesPerHour.push(Math.ceil(this.randomCustomersPerHour[i] * this.avgCookiesPerCustomer));
 //     this.totalDailySales += this.totalCookiesPerHour[i];  // SO IMPORTANT TO UNDERSTAND WHY THIS IS HERE
 //     console.log(this.totalDailySales);
-
 
 // SHOP 1
 // var pikePlaceMkt = {
