@@ -12,7 +12,6 @@ var samsShop = [];
 //   return Math.floor(Math.random() * (max - min + 1) + min);
 // }
 
-
 function Shop(location, minCustomersPerHour, maxCustomersPerHour, avgCookiesPerCustomer){
   this.location = location;
   this.minCustomersPerHour = minCustomersPerHour;
